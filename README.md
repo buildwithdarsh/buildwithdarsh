@@ -1,4 +1,3 @@
-> This project is made with the help of Claude (1M context).
 
 <!-- ════════════════════════════════════════════════════════════════
      withdarsh — image-only zine README. Every visible block is an SVG
