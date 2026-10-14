@@ -1,0 +1,12 @@
+# Never upload local secrets — production env lives in Vercel project settings
+.env*
+!.env.example
+
+# Local-only
+.claude
+.next
+node_modules
+*.tsbuildinfo
+
+# The GitHub profile README this folder also hosts — not part of the site
+README.md

@@ -1,0 +1,159 @@
+@import "tailwindcss";
+
+/*
+ * withdarsh zine design system — the same tokens as work.withdarsh.com,
+ * so build.withdarsh.com reads as part of one brand.
+ */
+@theme {
+  /* Surfaces */
+  --color-desk: #f1ead6;
+  --color-desk-deep: #e3d9bd;
+  --color-paper: #fbf8ef;
+  --color-paper-2: #f3ecdb;
+  --color-chrome: #f0e8d2;
+
+  /* Ink */
+  --color-ink: #1a1a1a;
+  --color-ink-2: #2e2a26;
+  --color-mute: #6e665b;
+
+  /* Zine accents */
+  --color-coral: #f47c5c;
+  --color-coral-deep: #c4502e;
+  --color-coral-soft: #f8b5a0;
+  --color-mustard: #e9b949;
+  --color-teal: #5c9ead;
+
+  /* Hard, offset "printed" shadows */
+  --shadow-window: 5px 6px 0 rgba(26, 26, 26, 0.7);
+  --shadow-card: 4px 5px 0 rgba(26, 26, 26, 0.6);
+  --shadow-card-hover: 7px 8px 0 rgba(26, 26, 26, 0.7);
+  --shadow-btn: 3px 3px 0 #1a1a1a;
+  --shadow-btn-hover: 5px 5px 0 #1a1a1a;
+  --shadow-btn-soft: 2px 2px 0 rgba(26, 26, 26, 0.5);
+  --shadow-chip: 2px 2px 0 #1a1a1a;
+  --shadow-code: 2px 2px 0 rgba(26, 26, 26, 0.25);
+
+  /* Motion */
+  --animate-rise: rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-swap: swap 0.35s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes swap {
+    from {
+      opacity: 0;
+      transform: translateX(-6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+/* next/font exposes these variables on <html> */
+@theme inline {
+  --font-sans: var(--font-architects), "Segoe Print", system-ui, sans-serif;
+  --font-display: var(--font-kalam), "Comic Sans MS", cursive;
+  --font-mono: var(--font-special-elite), "Courier New", ui-monospace, monospace;
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+    scroll-behavior: smooth;
+    /* keeps anchor targets clear of the sticky header */
+    scroll-padding-top: 84px;
+    background: var(--color-desk);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--color-desk);
+    /* faint dotted "desk" texture, as on work.withdarsh.com */
+    background-image: radial-gradient(rgba(26, 26, 26, 0.07) 1px, transparent 1.3px);
+    background-size: 22px 22px;
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  summary {
+    cursor: pointer;
+    list-style: none;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  button {
+    font-family: inherit;
+  }
+
+  ::selection {
+    background: var(--color-coral-soft);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px dashed var(--color-coral-deep);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+}
+
+/*
+ * Progressive-enhancement motion. Browsers without support (or visitors
+ * who prefer reduced motion) get the static page, fully visible.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  /* Fade-up as an element scrolls into view — CSS only, no JS. */
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 40%;
+    }
+  }
+
+  /* Smooth FAQ open/close */
+  @supports (interpolate-size: allow-keywords) {
+    :root {
+      interpolate-size: allow-keywords;
+    }
+
+    details::details-content {
+      height: 0;
+      overflow: clip;
+      transition:
+        height 0.3s ease,
+        content-visibility 0.3s allow-discrete;
+    }
+
+    details[open]::details-content {
+      height: auto;
+    }
+  }
+}
